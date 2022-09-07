@@ -29,14 +29,34 @@ ${transaction.text} <span>${sign}${Math.abs(transaction.amount)}</span><button c
 `;
 
   list.appendChild(item)
-}
+};
 
+function updateValues() {
+  const amounts = transactions.map(transaction => transaction.amount);
+
+  const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+
+  const incomeAmount = amounts
+    .filter(amount => amount > 0)
+    .reduce((acc, item) => (acc += item), 0)
+    .toFixed(2);
+
+  const expenseAmount = (amounts
+    .filter(amount => amount < 0)
+    .reduce((acc, item) => (acc += item), 0) * -1)
+    .toFixed(2)
+
+  balance.innerText = `£${total}`;
+  income.innerText = `£${incomeAmount}`;
+  expense.innerText = `£${expenseAmount}`;
+
+};
 
 function innit() {
   list.innerHTML = '';
 
-  transactions.forEach(addTransactionsToList)
+  transactions.forEach(addTransactionsToList);
+  updateValues()
 }
-
 
 innit()
