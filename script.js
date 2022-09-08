@@ -16,6 +16,34 @@ const dummyTransactions = [
 
 let transactions = dummyTransactions
 
+function addTransaction(e) {
+  e.preventDefault();
+
+  console.log(typeof transactionAmount.value);
+  if (transactionText.value === '' || transactionAmount.value === '') {
+    alert(`Don't leave empty fields`)
+  } else {
+    const transaction = {
+      id: generateID(),
+      text: transactionText.value,
+      amount: parseInt(transactionAmount.value),
+    }
+
+    transactions.push(transaction);
+    addTransactionsToList(transaction);
+    updateValues()
+
+    transactionText.value = '';
+    transactionAmount.value = ''
+  }
+}
+
+function generateID() {
+  const id = Math.floor(Math.random() * 10000000);
+
+  return id
+}
+
 // Add transactions to list
 
 function addTransactionsToList(transaction) {
@@ -39,7 +67,7 @@ function updateValues() {
   const incomeAmount = amounts
     .filter(amount => amount > 0)
     .reduce((acc, item) => (acc += item), 0)
-    .toFixed(2);
+    .toFixed(2)
 
   const expenseAmount = (amounts
     .filter(amount => amount < 0)
@@ -59,4 +87,5 @@ function innit() {
   updateValues()
 }
 
-innit()
+innit();
+form.addEventListener('submit', addTransaction)
