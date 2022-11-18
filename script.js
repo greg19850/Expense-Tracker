@@ -19,7 +19,6 @@ let transactions = dummyTransactions
 function addTransaction(e) {
   e.preventDefault();
 
-  console.log(typeof transactionAmount.value);
   if (transactionText.value === '' || transactionAmount.value === '') {
     alert(`Don't leave empty fields`)
   } else {
@@ -53,7 +52,7 @@ function addTransactionsToList(transaction) {
   item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
 
   item.innerHTML = `
-${transaction.text} <span>${sign}${Math.abs(transaction.amount)}</span><button class='delete-btn'>x</button>
+${transaction.text} <span>${sign}${Math.abs(transaction.amount)}</span><button class='delete-btn' onClick="removeTransaction(${transaction.id})">x</button>
 `;
 
   list.appendChild(item)
@@ -80,12 +79,18 @@ function updateValues() {
 
 };
 
-function innit() {
+function removeTransaction(id){
+  transactions = transactions.filter(transaction => transaction.id !== id)
+
+  init()
+}
+
+function init() {
   list.innerHTML = '';
 
   transactions.forEach(addTransactionsToList);
   updateValues()
 }
 
-innit();
+init();
 form.addEventListener('submit', addTransaction)
